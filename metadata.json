@@ -1,0 +1,30 @@
+{
+  "name": "thor77-sogo",
+  "version": "0.1.0",
+  "author": "thor77",
+  "summary": "Install and manage SoGo Groupware",
+  "license": "MIT",
+  "source": "https://github.com/Thor77/puppet-sogo",
+  "issues_url": "https://github.com/Thor77/puppet-sogo/issues",
+  "project_page": "https://github.com/Thor77/puppet-sogo",
+  "dependencies": [
+
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
+    }
+  ],
+  "pdk-version": "1.11.1",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#1.11.1",
+  "template-ref": "tags/1.11.1-0-g2ff8c24"
+}
