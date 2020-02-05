@@ -1,0 +1,16 @@
+<%- | Hash $config | -%>
+{
+  <%- $config.each |$key, $value| { -%>
+    <%- if $value =~ Hash { -%>
+  <%= $key %> = (
+    {
+      <%- $value.each |$k, $v| { -%>
+      <%= $k %> = <%= $v %>;
+      <%- } -%>
+    }
+  );
+    <%- } else { -%> 
+  <%= $key %> = <%= $value %>; 
+    <%- } -%>
+  <%- } -%>
+}

@@ -1,0 +1,7 @@
+---
+sogo::package_name: 'sogo'
+sogo::package_ensure: 'installed'
+sogo::service_name: 'miniflux.service'
+sogo::service_ensure: 'running'
+sogo::config_path: '/etc/sogo/sogo.conf'
+sogo::config: {}
