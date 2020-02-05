@@ -2,6 +2,7 @@
 class sogo (
   String $package_name,
   String $package_ensure,
+  Array[String] $extra_packages,
   String $service_name,
   String $service_ensure,
   String $config_path,
