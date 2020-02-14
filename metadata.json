@@ -5,8 +5,8 @@
   "summary": "Install and manage SoGo Groupware",
   "license": "MIT",
   "source": "https://github.com/Thor77/puppet-sogo",
-  "issues_url": "https://github.com/Thor77/puppet-sogo/issues",
   "project_page": "https://github.com/Thor77/puppet-sogo",
+  "issues_url": "https://github.com/Thor77/puppet-sogo/issues",
   "dependencies": [
 
   ],

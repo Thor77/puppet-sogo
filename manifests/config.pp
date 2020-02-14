@@ -1,4 +1,5 @@
 # @summary Manage SoGo configuration
+# @api private
 class sogo::config {
   file { $sogo::config_path:
     ensure       => 'present',

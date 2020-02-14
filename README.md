@@ -1,15 +1,33 @@
 # puppet-sogo
 
-Module to manage SoGo groupware
+Module to manage [SOGo groupware](https://sogo.nu/)
 
-## Usage
+## Example
 
 ```puppet
+$database = 'postgresql://sogo@127.0.0.1/sogo'
+
 class { 'sogo':
+    # postgresql support
+    extra_packages => ['sope4.9-gdl1-postgresql'],
+    config => {
+        'SOGoProfileURL' => "${database}/sogo_user_profile",
+        'OCSFolderInfoURL' => "${database}/sogo_folder_info",
+        'OCSSessionsFolderURL' => "${database}/sogo_sessions_folder",
+        'SOGoSieveScriptsEnabled' => 'YES',
+        'SOGoMailCustomFromEnabled' => 'YES',
+        'SOGoUserSources' => {
+            'type' => 'sql',
+            'id' => 'directory',
+            'viewURL' => "${database}/sogo_view",
+            'canAuthenticate' => 'YES',
+            'isAddressBook' => 'YES',
+            'userPasswordAlgorithm' => 'md5',
+        },
+    },
 }
 ```
 
 ## Limitations
-
-* currently only Debian is supported
-* no tests
+* no unit/integration tests
+* only tested on Debian 10
