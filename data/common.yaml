@@ -6,3 +6,4 @@ sogo::service_name: 'sogo'
 sogo::service_ensure: 'running'
 sogo::config_path: '/etc/sogo/sogo.conf'
 sogo::config: {}
+sogo::sysconfig: {}

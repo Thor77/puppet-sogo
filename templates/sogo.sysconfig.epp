@@ -1,0 +1,8 @@
+<%- | Hash $sysconfig | -%>
+#
+# Managed by Puppet
+#
+
+<%- $sysconfig.each |$key, $value| { -%>
+<%= $key %>=<%= $value %>
+<%- } -%>
