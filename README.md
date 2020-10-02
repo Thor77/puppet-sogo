@@ -10,9 +10,6 @@ $database = 'postgresql://sogo@127.0.0.1/sogo'
 class { 'sogo':
     # postgresql support
     extra_packages => ['sope4.9-gdl1-postgresql'],
-    sysconfig => {
-        'PREFORK' => 3,
-    },
     config => {
         'SOGoProfileURL' => "${database}/sogo_user_profile",
         'OCSFolderInfoURL' => "${database}/sogo_folder_info",
@@ -27,6 +24,9 @@ class { 'sogo':
             'isAddressBook' => 'YES',
             'userPasswordAlgorithm' => 'md5',
         },
+    },
+    envconfig => {
+        'PREFORK' => 3,
     },
 }
 ```

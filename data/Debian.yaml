@@ -1,2 +1,2 @@
 ---
-sogo::sysconfig_path: '/etc/default/sogo'
+sogo::envconfig_path: '/etc/default/sogo'
