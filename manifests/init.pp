@@ -7,7 +7,9 @@
 # @param [String] service_name Name of the SOGo service
 # @param [String] service_ensure Ensure for service resource
 # @param [String] config_path Path to configuration file
+# @param [String] envconfig_path path to environment configuration
 # @param [Hash] config SOGo configuration
+# @param [Hash] envconfig environment configuration
 class sogo (
   String $package_name,
   String $package_ensure,
