@@ -25,6 +25,9 @@ class { 'sogo':
             'userPasswordAlgorithm' => 'md5',
         },
     },
+    envconfig => {
+        'PREFORK' => 3,
+    },
 }
 ```
 

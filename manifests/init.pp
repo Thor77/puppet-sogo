@@ -15,9 +15,12 @@ class sogo (
   String $service_name,
   String $service_ensure,
   String $config_path,
+  String $envconfig_path,
   Hash $config,
+  Hash $envconfig,
 ) {
   contain sogo::install
   contain sogo::config
+  contain sogo::envconfig
   contain sogo::service
 }

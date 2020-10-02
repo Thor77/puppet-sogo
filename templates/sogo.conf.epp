@@ -1,4 +1,8 @@
 <%- | Hash $config | -%>
+//
+// Managed by Puppet
+//
+
 {
   <%- $config.each |$key, $value| { -%>
     <%- if $value =~ Hash { -%>

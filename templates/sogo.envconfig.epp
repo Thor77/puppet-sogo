@@ -1,0 +1,8 @@
+<%- | Hash $envconfig | -%>
+#
+# Managed by Puppet
+#
+
+<%- $envconfig.each |$key, $value| { -%>
+<%= $key %>=<%= $value %>
+<%- } -%>
