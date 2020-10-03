@@ -8,7 +8,10 @@
   "project_page": "https://github.com/Thor77/puppet-sogo",
   "issues_url": "https://github.com/Thor77/puppet-sogo/issues",
   "dependencies": [
-
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.13.1 < 7.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
@@ -39,10 +42,6 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.0 < 7.0.0"
-    },
-    {
-      "name": "puppet/stdlib",
       "version_requirement": ">= 4.10.0 < 7.0.0"
     }
   ],
