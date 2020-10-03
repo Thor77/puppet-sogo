@@ -1,0 +1,28 @@
+---
+".travis.yml":
+  deploy_to_forge:
+    enabled: false
+  secure: ''
+  bundler_args: ''
+  remove_branches:
+    - master
+    - /^v\d/
+  simplecov: true
+  includes:
+    - env: PUPPET_GEM_VERSION="~> 4.10" CHECK=parallel_spec
+      rvm: 2.4.5
+      stage: spec
+
+appveyor.yml:
+  delete: true
+
+".gitlab-ci.yml":
+  delete: true
+
+Rakefile:
+  requires:
+  - puppet-lint/tasks/puppet-lint
+
+spec/spec_helper.rb:
+  mock_with: ":rspec"
+  coverage_report: true

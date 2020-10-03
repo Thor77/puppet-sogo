@@ -1,4 +1,9 @@
 # puppet-sogo
+[![Build Status](https://travis-ci.com/Thor77/puppet-sogo.svg?branch=master)](https://travis-ci.com/Thor77/puppet-sogo)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/thor77/sogo.svg)](https://forge.puppetlabs.com/thor77/sogo)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/thor77/sogo.svg)](https://forge.puppetlabs.com/thor77/sogo)
+
+
 
 Module to manage [SOGo groupware](https://sogo.nu/)
 
@@ -32,5 +37,4 @@ class { 'sogo':
 ```
 
 ## Limitations
-* no unit/integration tests
-* only tested on Debian 10
+* no acceptance tests
