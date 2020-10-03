@@ -1,5 +1,7 @@
 ---
 ".travis.yml":
+  use_litmus: true
+  beaker: true
   deploy_to_forge:
     enabled: false
   secure: ''
@@ -8,16 +10,20 @@
     - master
     - /^v\d/
   simplecov: true
-  includes:
-    - env: PUPPET_GEM_VERSION="~> 4.10" CHECK=parallel_spec
-      rvm: 2.4.5
-      stage: spec
 
 appveyor.yml:
   delete: true
 
 ".gitlab-ci.yml":
   delete: true
+
+Gemfile:
+  optional:
+    ':development':
+      - gem: 'serverspec'
+      - gem: 'hiera-puppet-helper'
+      - gem: 'beaker'
+      - gem: 'beaker-rspec'
 
 Rakefile:
   requires:
