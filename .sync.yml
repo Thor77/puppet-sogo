@@ -1,7 +1,6 @@
 ---
 ".travis.yml":
   use_litmus: true
-  beaker: true
   deploy_to_forge:
     enabled: false
   secure: ''
@@ -22,8 +21,6 @@ Gemfile:
     ':development':
       - gem: 'serverspec'
       - gem: 'hiera-puppet-helper'
-      - gem: 'beaker'
-      - gem: 'beaker-rspec'
 
 Rakefile:
   requires:
