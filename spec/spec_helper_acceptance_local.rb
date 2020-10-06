@@ -33,7 +33,7 @@ module PrepareSogoEnvironment
           yumrepo { "sogo-rhel-${facts['os']['release']['major']}":
             baseurl => "https://packages.inverse.ca/SOGo/nightly/5/rhel/${facts['os']['release']['major']}/\\$basearch",
             gpgkey => 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb022c48d3d6373d7fc256a8ccb2d3a2aa0030e2c',
-            gpgcheck => true
+            gpgcheck => false
           }
         }
         'Debian': {
