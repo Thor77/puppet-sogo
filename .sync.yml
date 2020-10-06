@@ -1,6 +1,5 @@
 ---
 ".travis.yml":
-  use_litmus: true
   deploy_to_forge:
     enabled: false
   secure: ''
@@ -9,6 +8,25 @@
     - master
     - /^v\d/
   simplecov: true
+  use_litmus: true
+  litmus:
+    provision_list:
+    - ---travis_el
+    - travis_deb
+    - travis_el6
+    - travis_el7
+    - travis_el8
+    complex:
+    - collection:
+        puppet_collection:
+        - puppet6
+        provision_list:
+        - travis_ub_6
+    - collection:
+        puppet_collection:
+        - puppet5
+        provision_list:
+        - travis_ub_5
 
 appveyor.yml:
   delete: true
