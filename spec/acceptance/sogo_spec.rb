@@ -66,6 +66,10 @@ describe '::sogo' do
         it { is_expected.to be_file }
         its(:content) { is_expected.to match %r{^PREFORK=3$} }
       end
+
+      describe port(20_000) do
+        it { is_expected.to be_listening }
+      end
     end
   end
 
@@ -82,6 +86,10 @@ describe '::sogo' do
       describe file('/etc/default/sogo') do
         it { is_expected.to be_file }
         its(:content) { is_expected.to match %r{^PREFORK=3$} }
+      end
+
+      describe port(20_000) do
+        it { is_expected.to be_listening }
       end
     end
   end
