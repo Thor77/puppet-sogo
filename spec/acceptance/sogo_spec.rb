@@ -14,7 +14,7 @@ describe '::sogo' do
             line => 'PIDFile=/var/run/sogo/sogo.pid',
             notify => Service['sogod'],
           }
-	}
+        }
       }
       'Debian': {
 	$extra_packages = ['sope4.9-gdl1-postgresql']
