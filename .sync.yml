@@ -8,16 +8,37 @@
     - master
     - /^v\d/
   simplecov: true
-  includes:
-    - env: PUPPET_GEM_VERSION="~> 4.10" CHECK=parallel_spec
-      rvm: 2.4.5
-      stage: spec
+  use_litmus: true
+  litmus:
+    provision_list:
+    - ---travis_el
+    - travis_deb
+    - travis_el6
+    - travis_el7
+    - travis_el8
+    complex:
+    - collection:
+        puppet_collection:
+        - puppet6
+        provision_list:
+        - travis_ub_6
+    - collection:
+        puppet_collection:
+        - puppet5
+        provision_list:
+        - travis_ub_5
 
 appveyor.yml:
   delete: true
 
 ".gitlab-ci.yml":
   delete: true
+
+Gemfile:
+  optional:
+    ':development':
+      - gem: 'serverspec'
+      - gem: 'hiera-puppet-helper'
 
 Rakefile:
   requires:
