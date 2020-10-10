@@ -36,5 +36,30 @@ class { 'sogo':
 }
 ```
 
-## Limitations
-* no acceptance tests
+Multiple user sources can be defined as an array of hashes
+
+```puppet
+class { 'sogo':
+...
+    config => {
+        'SOGoUserSources' => [
+          {
+            'type' => 'sql',
+            'id' => 'directory',
+            'viewURL' => "${database}/sogo_view",
+            'canAuthenticate' => 'YES',
+            'isAddressBook' => 'YES',
+            'userPasswordAlgorithm' => 'md5',
+          },
+          {
+            'type' => 'sql',
+            'id' => 'addressbook',
+            'viewURL' => "${database}/sogo_view_addresses",
+            'canAuthenticate' => 'NO',
+            'isAddressBook' => 'YES',
+          },
+        ],
+    }
+...
+}
+```

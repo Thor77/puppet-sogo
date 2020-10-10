@@ -85,6 +85,35 @@ describe 'sogo' do
         is_expected.not_to contain_file('/etc/default/sogo')
       end
     end
+
+    context 'with multiple SOGoUserSources' do
+      let :params do
+        {
+          'config' => {
+            'SOGoSieveScriptsEnabled' => 'YES',
+            'SOGoUserSources' => [
+              {
+                'type' => 'sql',
+                'id' => 'directory',
+                'viewURL' => 'postgresql:/sogo@127.0.0.1/sogo/sogo_view',
+              },
+              {
+                'type' => 'sql',
+                'id' => 'addressbook',
+                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view_test',
+              },
+            ],
+          },
+        }
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sogo/sogo.conf') \
+          .with_content(%r{id = addressbook;}) \
+          .with_content(%r{id = directory;}) \
+          .that_notifies('Service[sogo]')
+      end
+    end
   end
 
   context 'on a RedHat OS' do
@@ -125,6 +154,35 @@ describe 'sogo' do
 
       it do
         is_expected.not_to contain_file('/etc/sysconfig/sogo')
+      end
+    end
+
+    context 'with multiple SOGoUserSources' do
+      let :params do
+        {
+          'config' => {
+            'SOGoSieveScriptsEnabled' => 'YES',
+            'SOGoUserSources' => [
+              {
+                'type' => 'sql',
+                'id' => 'directory',
+                'viewURL' => 'postgresql:/sogo@127.0.0.1/sogo/sogo_view',
+              },
+              {
+                'type' => 'sql',
+                'id' => 'addressbook',
+                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view_test',
+              },
+            ],
+          },
+        }
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sogo/sogo.conf') \
+          .with_content(%r{id = addressbook;}) \
+          .with_content(%r{id = directory;}) \
+          .that_notifies('Service[sogod]')
       end
     end
   end
