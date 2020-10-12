@@ -95,7 +95,7 @@ describe 'sogo' do
               {
                 'type' => 'sql',
                 'id' => 'directory',
-                'viewURL' => 'postgresql:/sogo@127.0.0.1/sogo/sogo_view',
+                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
               },
               {
                 'type' => 'sql',
@@ -166,7 +166,7 @@ describe 'sogo' do
               {
                 'type' => 'sql',
                 'id' => 'directory',
-                'viewURL' => 'postgresql:/sogo@127.0.0.1/sogo/sogo_view',
+                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
               },
               {
                 'type' => 'sql',
