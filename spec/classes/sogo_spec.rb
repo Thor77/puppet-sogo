@@ -42,55 +42,45 @@ describe 'sogo' do
             .with_ensure('installed')
         end
       end
-    end
-  end
-
-  context 'on a Debian OS' do
-    let :facts do
-      {
-        os: {
-          family: 'Debian',
-        },
-      }
-    end
-
-    it do
-      is_expected.to contain_service('sogo') \
-        .with_ensure('running') \
-        .with_enable(true)
-    end
-
-    it do
-      is_expected.to contain_file('/etc/default/sogo') \
-        .with_content(%r{^PREFORK=15$}) \
-        .that_notifies('Service[sogo]')
-    end
-
-    it do
-      is_expected.to contain_file('/etc/sogo/sogo.conf') \
-        .with_content(%r{OCSSessionsFolderURL = postgresql://sogo@127.0.0.1/sogo/sogo_sessions_folder;}) \
-        .that_notifies('Service[sogo]')
-    end
-
-    it do
-      is_expected.to contain_file('/etc/sogo/sogo.conf') \
-        .with_content(%r{SOGoUserSources = \(\n    \{\n      type = sql;}) \
-        .that_notifies('Service[sogo]')
-    end
-
-    context 'with empty envconfig' do
-      let(:params) { { 'envconfig' => {} } }
 
       it do
-        is_expected.not_to contain_file('/etc/default/sogo')
+        is_expected.to contain_service('sogo') \
+          .with_ensure('running') \
+          .with_enable(true)
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sogo/sogo.conf') \
+          .with_content(%r{OCSSessionsFolderURL = postgresql://sogo@127.0.0.1/sogo/sogo_sessions_folder;}) \
+          .that_notifies('Service[sogo]')
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sogo/sogo.conf') \
+          .with_content(%r{SOGoUserSources = \(\n    \{\n      type = sql;}) \
+          .that_notifies('Service[sogo]')
+      end
+
+      it do
+        is_expected.to contain_file('envconfig') \
+          .with_content(%r{^PREFORK=15$}) \
+          .that_notifies('Service[sogo]')
+      end
+
+      context 'with empty envconfig' do
+        let(:params) { { 'envconfig' => {} } }
+
+        it do
+          is_expected.not_to contain_file('envconfig')
+        end
       end
     end
 
-    context 'with multiple SOGoUserSources' do
+    context "Multiple user sources on #{os}" do
+      let(:facts) { os_facts }
       let :params do
         {
           'config' => {
-            'SOGoSieveScriptsEnabled' => 'YES',
             'SOGoUserSources' => [
               {
                 'type' => 'sql',
@@ -112,77 +102,6 @@ describe 'sogo' do
           .with_content(%r{id = addressbook;}) \
           .with_content(%r{id = directory;}) \
           .that_notifies('Service[sogo]')
-      end
-    end
-  end
-
-  context 'on a RedHat OS' do
-    let :facts do
-      {
-        os: {
-          family: 'RedHat',
-        },
-      }
-    end
-
-    it do
-      is_expected.to contain_service('sogod') \
-        .with_ensure('running') \
-        .with_enable(true)
-    end
-
-    it do
-      is_expected.to contain_file('/etc/sysconfig/sogo') \
-        .with_content(%r{^PREFORK=15$}) \
-        .that_notifies('Service[sogod]')
-    end
-
-    it do
-      is_expected.to contain_file('/etc/sogo/sogo.conf') \
-        .with_content(%r{OCSSessionsFolderURL = postgresql://sogo@127.0.0.1/sogo/sogo_sessions_folder;}) \
-        .that_notifies('Service[sogod]')
-    end
-
-    it do
-      is_expected.to contain_file('/etc/sogo/sogo.conf') \
-        .with_content(%r{SOGoUserSources = \(\n    \{\n      type = sql;}) \
-        .that_notifies('Service[sogod]')
-    end
-
-    context 'with empty envconfig' do
-      let(:params) { { 'envconfig' => {} } }
-
-      it do
-        is_expected.not_to contain_file('/etc/sysconfig/sogo')
-      end
-    end
-
-    context 'with multiple SOGoUserSources' do
-      let :params do
-        {
-          'config' => {
-            'SOGoSieveScriptsEnabled' => 'YES',
-            'SOGoUserSources' => [
-              {
-                'type' => 'sql',
-                'id' => 'directory',
-                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
-              },
-              {
-                'type' => 'sql',
-                'id' => 'addressbook',
-                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view_test',
-              },
-            ],
-          },
-        }
-      end
-
-      it do
-        is_expected.to contain_file('/etc/sogo/sogo.conf') \
-          .with_content(%r{id = addressbook;}) \
-          .with_content(%r{id = directory;}) \
-          .that_notifies('Service[sogod]')
       end
     end
   end
