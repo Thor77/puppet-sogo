@@ -93,4 +93,34 @@ describe '::sogo' do
       end
     end
   end
+
+  context 'with multiple SOGoUserSources' do
+    pp_multiples = <<-PUPPETCODE
+      $database = 'postgresql://sogo@127.0.0.1/sogo'
+
+      class { 'sogo':
+        config => {
+          'SOGoUserSources' => [
+            {
+              'type' => 'sql',
+              'id' => 'directory',
+              'viewURL' => "${database}/sogo_view",
+            },
+            {
+              'type' => 'sql',
+              'id' => 'addressbook',
+              'viewURL' => "${database}/sogo_view_test",
+            },
+          ],
+        }
+      }
+    PUPPETCODE
+
+    describe file('/etc/sogo/sogo.conf') do
+      apply_manifest(pp_multiples)
+      it { is_expected.to be_file }
+      its(:content) { is_expected.to match %r{id = directory;} }
+      its(:content) { is_expected.to match %r{id = addressbook;} }
+    end
+  end
 end
