@@ -25,13 +25,40 @@ describe '::sogo' do
     class { 'sogo':
       extra_packages => $extra_packages,
       config => {
-          'SOGoSieveScriptsEnabled' => 'YES',
-          'SOGoMailCustomFromEnabled' => 'YES',
-          'SOGoUserSources' => {
-              'type' => 'sql',
-              'id' => 'directory',
-              'viewURL' => "${database}/sogo_view",
+        'SOGoSieveScriptsEnabled' => 'YES',
+        'SOGoMailCustomFromEnabled' => 'YES',
+        'domains' => {
+          'example.org' => {
+            'SOGoSieveScriptsEnabled' => 'NO',
+            'SOGoUserSources' => [
+              {
+                'type' => 'sql',
+                'id' => 'directory',
+                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+              },
+              {
+                'type' => 'sql',
+                'id' => 'addressbook',
+                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view_test',
+              },
+            ],
           },
+          'example.net' => {
+            'SOGoSieveScriptsEnabled' => 'YES',
+            'SOGoUserSources' => [
+              {
+                'type' => 'sql',
+                'id' => 'directory',
+                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+              },
+              {
+                'type' => 'sql',
+                'id' => 'addressbook',
+                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view_test',
+              },
+            ],
+          },
+        }
       },
       envconfig => {
           'PREFORK' => 3,
@@ -39,8 +66,8 @@ describe '::sogo' do
     }
   PUPPETCODE
 
-  context 'on all systems default parameters' do
-    apply_manifest(pp)
+  context 'on all systems' do
+    idempotent_apply(pp)
 
     describe package('sogo') do
       it { is_expected.to be_installed }
@@ -48,7 +75,11 @@ describe '::sogo' do
 
     describe file('/etc/sogo/sogo.conf') do
       it { is_expected.to be_file }
-      its(:content) { is_expected.to match %r{SOGoUserSources = \(\n    \{\n      type = sql;} }
+      its(:content) { is_expected.to match %r{^\{\n  SOGoSieveScriptsEnabled = YES;\n  SOGoMailCustomFromEnabled = YES;} }
+      its(:content) { is_expected.to match %r{^  domains = \{\n    example.org = \{\n      SOGoSieveScriptsEnabled = NO;\n      SOGoUserSources = \(} }
+      its(:content) { is_expected.to match %r{^    example.net = \{} }
+      its(:content) { is_expected.to match %r{^          id = directory;} }
+      its(:content) { is_expected.to match %r{^          id = addressbook;} }
     end
   end
 
@@ -91,36 +122,6 @@ describe '::sogo' do
       describe port(20_000) do
         it { is_expected.to be_listening }
       end
-    end
-  end
-
-  context 'with multiple SOGoUserSources' do
-    pp_multiples = <<-PUPPETCODE
-      $database = 'postgresql://sogo@127.0.0.1/sogo'
-
-      class { 'sogo':
-        config => {
-          'SOGoUserSources' => [
-            {
-              'type' => 'sql',
-              'id' => 'directory',
-              'viewURL' => "${database}/sogo_view",
-            },
-            {
-              'type' => 'sql',
-              'id' => 'addressbook',
-              'viewURL' => "${database}/sogo_view_test",
-            },
-          ],
-        }
-      }
-    PUPPETCODE
-
-    describe file('/etc/sogo/sogo.conf') do
-      apply_manifest(pp_multiples)
-      it { is_expected.to be_file }
-      its(:content) { is_expected.to match %r{id = directory;} }
-      its(:content) { is_expected.to match %r{id = addressbook;} }
     end
   end
 end
