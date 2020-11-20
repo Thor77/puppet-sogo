@@ -65,3 +65,36 @@ class { 'sogo':
 ...
 }
 ```
+
+Multidomain example
+
+```puppet
+class { 'sogo':
+...
+    config => {
+      'domains' => {
+        'example.org' => {
+          'SOGoSieveScriptsEnabled' => 'NO',
+          'SOGoUserSources' => [
+            {
+              'type' => 'sql',
+              'id' => 'directory',
+              'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+            },
+          ],
+        },
+        'example.net' => {
+          'SOGoSieveScriptsEnabled' => 'YES',
+          'SOGoUserSources' => [
+            {
+              'type' => 'sql',
+              'id' => 'directory',
+              'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+            },
+          ],
+        },
+      },
+    }
+...
+
+```
