@@ -21,14 +21,16 @@ class { 'sogo':
         'OCSSessionsFolderURL' => "${database}/sogo_sessions_folder",
         'SOGoSieveScriptsEnabled' => 'YES',
         'SOGoMailCustomFromEnabled' => 'YES',
-        'SOGoUserSources' => {
-            'type' => 'sql',
-            'id' => 'directory',
-            'viewURL' => "${database}/sogo_view",
-            'canAuthenticate' => 'YES',
-            'isAddressBook' => 'YES',
+        'SOGoUserSources' => [
+          {
+            'type'                  => 'sql',
+            'id'                    => 'directory',
+            'viewURL'               => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+            'canAuthenticate'       => 'YES',
+            'isAddressBook'         => 'YES',
             'userPasswordAlgorithm' => 'md5',
-        },
+          },
+        ],
     },
     envconfig => {
         'PREFORK' => 3,

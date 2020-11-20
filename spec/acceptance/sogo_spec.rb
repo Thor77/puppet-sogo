@@ -67,7 +67,7 @@ describe '::sogo' do
   PUPPETCODE
 
   context 'on all systems' do
-    idempotent_apply(pp)
+    apply_manifest(pp)
 
     describe package('sogo') do
       it { is_expected.to be_installed }
