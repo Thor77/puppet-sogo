@@ -13,14 +13,16 @@ describe 'sogo' do
         'OCSSessionsFolderURL'      => 'postgresql://sogo@127.0.0.1/sogo/sogo_sessions_folder',
         'SOGoSieveScriptsEnabled'   => 'YES',
         'SOGoMailCustomFromEnabled' => 'YES',
-        'SOGoUserSources' => {
-          'type'                  => 'sql',
-          'id'                    => 'directory',
-          'viewURL'               => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
-          'canAuthenticate'       => 'YES',
-          'isAddressBook'         => 'YES',
-          'userPasswordAlgorithm' => 'md5',
-        },
+        'SOGoUserSources' => [
+          {
+            'type'                  => 'sql',
+            'id'                    => 'directory',
+            'viewURL'               => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+            'canAuthenticate'       => 'YES',
+            'isAddressBook'         => 'YES',
+            'userPasswordAlgorithm' => 'md5',
+          },
+        ],
       },
     }
   let(:params) { params_hash }
@@ -76,23 +78,43 @@ describe 'sogo' do
       end
     end
 
-    context "Multiple user sources on #{os}" do
+    context "Multiple domains with multiple user sources on #{os}" do
       let(:facts) { os_facts }
       let :params do
         {
           'config' => {
-            'SOGoUserSources' => [
-              {
-                'type' => 'sql',
-                'id' => 'directory',
-                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+            'domains' => {
+              'example.org' => {
+                'SOGoSieveScriptsEnabled' => 'NO',
+                'SOGoUserSources' => [
+                  {
+                    'type' => 'sql',
+                    'id' => 'directory',
+                    'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+                  },
+                  {
+                    'type' => 'sql',
+                    'id' => 'addressbook',
+                    'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view_test',
+                  },
+                ],
               },
-              {
-                'type' => 'sql',
-                'id' => 'addressbook',
-                'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view_test',
+              'example.net' => {
+                'SOGoSieveScriptsEnabled' => 'YES',
+                'SOGoUserSources' => [
+                  {
+                    'type' => 'sql',
+                    'id' => 'directory',
+                    'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view',
+                  },
+                  {
+                    'type' => 'sql',
+                    'id' => 'addressbook',
+                    'viewURL' => 'postgresql://sogo@127.0.0.1/sogo/sogo_view_test',
+                  },
+                ],
               },
-            ],
+            },
           },
         }
       end
@@ -101,6 +123,8 @@ describe 'sogo' do
         is_expected.to contain_file('/etc/sogo/sogo.conf') \
           .with_content(%r{id = addressbook;}) \
           .with_content(%r{id = directory;}) \
+          .with_content(%r{\{\n  domains = \{\n    example.org = \{\n      SOGoSieveScriptsEnabled = NO;\n      SOGoUserSources = \(}) \
+          .with_content(%r{    example.net = \{}) \
           .that_notifies('Service[sogo]')
       end
     end
